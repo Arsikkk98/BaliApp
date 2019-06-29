@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <bitmap
+            android:gravity="fill"
+            android:src="@drawable/fon"
+            />
+    </item>
+
+    <item android:bottom="140dp">
+        <bitmap
+            android:gravity="bottom"
+            android:src="@drawable/logo"
+            />
+    </item>
+
+</layer-list>
