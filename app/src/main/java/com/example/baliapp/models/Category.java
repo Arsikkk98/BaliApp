@@ -1,23 +1,25 @@
 package com.example.baliapp.models;
 
+import android.content.Intent;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Category {
 
-    private Class categoryPage;
+    private Intent categoryPage;
     private int image;
 
-    public Category(Class cls, int image){
-        this.categoryPage = cls;
+    public Category(Intent intent, int image){
+        this.categoryPage = intent;
         this.image = image;
     }
 
-    public Class getCategoryPage() {
+    public Intent getCategoryPage() {
         return this.categoryPage;
     }
 
-    public void setCategoryPage(Class cls) {
-        this.categoryPage = cls;
+    public void setCategoryPage(Intent intent) {
+        this.categoryPage = intent;
     }
 
 

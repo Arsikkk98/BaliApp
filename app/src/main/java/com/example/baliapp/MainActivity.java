@@ -75,10 +75,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setInitialData(){
-        categories.add(new Category(SplashActivity.class, R.drawable.item1));
-        categories.add(new Category(SplashActivity.class, R.drawable.item2));
-        categories.add(new Category(SplashActivity.class, R.drawable.item3));
-        categories.add(new Category(SplashActivity.class, R.drawable.item1));
+        categories.add(new Category(new Intent(this, SplashActivity.class), R.drawable.item1));
+        categories.add(new Category(new Intent(this, SplashActivity.class), R.drawable.item2));
+        categories.add(new Category(new Intent(this, SplashActivity.class), R.drawable.item3));
+        categories.add(new Category(new Intent(this, SplashActivity.class), R.drawable.item1));
     }
 
 }

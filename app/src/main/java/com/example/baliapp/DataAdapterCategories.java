@@ -36,13 +36,13 @@ class DataAdapterCategories extends RecyclerView.Adapter<DataAdapterCategories.V
         final Category someCategory = categories.get(position);
         holder.imageView.setImageResource(someCategory.getImage());
 
-        /*holder.imageView.setOnClickListener(new View.OnClickListener() {
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(this, );
-                startActivity(intent);
+                Intent intent = someCategory.getCategoryPage();
+                view.getContext().startActivity(intent);
             }
-        });*/
+        });
     }
 
     @Override
