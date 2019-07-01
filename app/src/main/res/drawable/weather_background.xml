@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <bitmap
+            android:gravity="fill"
+            android:src="@drawable/weather_fon"
+            />
+    </item>
+
+    <item android:gravity="top" android:top="-10dp" android:left="-30dp">
+        <bitmap
+            android:src="@drawable/rectangle_top"
+            />
+    </item>
+
+    <item android:gravity="bottom" android:bottom="-5dp" android:left="-30dp">
+        <bitmap
+            android:src="@drawable/rectangle_bottom"
+            />
+    </item>
+
+</layer-list>

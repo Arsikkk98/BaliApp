@@ -81,4 +81,9 @@ public class MainActivity extends AppCompatActivity {
         categories.add(new Category(new Intent(this, SplashActivity.class), R.drawable.item1));
     }
 
+    public void openWeather(View view) {
+        Intent intent = new Intent(this, WeatherActivity.class);
+        startActivity(intent);
+    }
+
 }

@@ -13,4 +13,9 @@
         <item name="android:windowBackground">@drawable/splashscreen</item>
     </style>
 
+    <style name="WeatherTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/weather_background</item>
+        <item name="android:fontFamily">@font/champagne_and_limousines</item>
+    </style>
+
 </resources>
