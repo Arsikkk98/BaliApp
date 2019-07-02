@@ -86,4 +86,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void openConverter(View view) {
+        Intent intent = new Intent(this, ConverterActivity.class);
+        startActivity(intent);
+    }
+
 }

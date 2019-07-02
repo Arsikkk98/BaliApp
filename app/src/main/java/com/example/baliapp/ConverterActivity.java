@@ -1,21 +1,23 @@
 package com.example.baliapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class WeatherActivity extends AppCompatActivity {
-
+public class ConverterActivity extends AppCompatActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //изменение цвета statusbar во время заставки
@@ -31,19 +33,23 @@ public class WeatherActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 
-        setContentView(R.layout.weather_activity);
+        setContentView(R.layout.converter_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
-        toolbar.setNavigationIcon(R.drawable.ic_chevron_left_white_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_chevron_left_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+        //Открытие клавиатуры
+        EditText editText = (EditText) findViewById(R.id.editCount);
 
+        // Request focus and show soft keyboard automatically
+        editText.requestFocus();
     }
 
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {

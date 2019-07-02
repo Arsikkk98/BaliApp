@@ -18,4 +18,9 @@
         <item name="android:fontFamily">@font/champagne_and_limousines</item>
     </style>
 
+    <style name="ConerterTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/converter_fon</item>
+        <item name="android:fontFamily">@font/champagne_and_limousines</item>
+    </style>
+
 </resources>

@@ -2,4 +2,5 @@
     <string name="app_name">BaliApp</string>
     <string name="main_title">Bali</string>
     <string name="weather_title">Денпасар</string>
+    <string name="coverter_title">Конвертер валют</string>
 </resources>

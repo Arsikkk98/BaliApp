@@ -49,7 +49,8 @@
             android:background="@drawable/menu_button"
             android:scaleX="0.6"
             android:scaleY="0.6"
-            android:src="@drawable/dollar_symbol" />
+            android:src="@drawable/dollar_symbol"
+            android:onClick="openConverter"/>
 
     </LinearLayout>
 
