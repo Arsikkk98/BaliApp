@@ -18,7 +18,7 @@ public class WeatherActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        //изменение цвета statusbar во время заставки
+        //region Изменение цвета statusbar во время заставки
         Window w = getWindow();
         if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
             setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true);
@@ -30,9 +30,11 @@ public class WeatherActivity extends AppCompatActivity {
             setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
+        //endregion
 
         setContentView(R.layout.weather_activity);
 
+        //region Замена ActionBar на ToolBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
@@ -43,9 +45,11 @@ public class WeatherActivity extends AppCompatActivity {
                 finish();
             }
         });
+        //endregion
 
     }
 
+    //Включение/Отключение нужного параметра
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {
         Window win = activity.getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();
@@ -56,4 +60,5 @@ public class WeatherActivity extends AppCompatActivity {
         }
         win.setAttributes(winParams);
     }
+
 }

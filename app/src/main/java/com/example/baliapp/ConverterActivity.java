@@ -1,15 +1,12 @@
 package com.example.baliapp;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +17,7 @@ public class ConverterActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //изменение цвета statusbar во время заставки
+        //region Изменение цвета statusbar во время заставки
         Window w = getWindow();
         if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
             setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true);
@@ -32,9 +29,11 @@ public class ConverterActivity extends AppCompatActivity {
             setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
+        //endregion
 
         setContentView(R.layout.converter_activity);
 
+        //region Замена ActionBar на ToolBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
@@ -45,13 +44,14 @@ public class ConverterActivity extends AppCompatActivity {
                 finish();
             }
         });
+        //endregion
+
         //Открытие клавиатуры
         EditText editText = (EditText) findViewById(R.id.editCount);
-
-        // Request focus and show soft keyboard automatically
         editText.requestFocus();
     }
 
+    //Включение/Отключение нужного параметра
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {
         Window win = activity.getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();
@@ -62,4 +62,5 @@ public class ConverterActivity extends AppCompatActivity {
         }
         win.setAttributes(winParams);
     }
+
 }
