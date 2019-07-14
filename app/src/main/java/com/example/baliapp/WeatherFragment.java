@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.baliapp.models.weather_classes.MyWeather;
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,17 +22,29 @@ import javax.net.ssl.HttpsURLConnection;
 
 
 public class WeatherFragment extends Fragment {
+    TextView todayDegreesTextView;
+    TextView sunsetTextView;
+    TextView weatherTypeTextView;
+    TextView maxTempTextView;
+    TextView minTempTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //new ProgressTask().execute("http://api.openweathermap.org/data/2.5/find?q=Denpasar&appid=cbc5d13097177f5161e51f6bbb5878bc");
+        View view = inflater.inflate(R.layout.fragment_weather, container, false);
+        todayDegreesTextView = (TextView) view.findViewById(R.id.todayDegreesTextView);
+        sunsetTextView = (TextView) view.findViewById(R.id.sunsetTextView);
+        weatherTypeTextView = (TextView) view.findViewById(R.id.weatherTypeTextView);
+        maxTempTextView = (TextView) view.findViewById(R.id.maxTempTextView);
+        minTempTextView = (TextView) view.findViewById(R.id.minTempTextView);
 
-        return inflater.inflate(R.layout.fragment_weather, container, false);
+        new ProgressTask().execute("https://api.openweathermap.org/data/2.5/find?q=Denpasar&lang=ru&appid=cbc5d13097177f5161e51f6bbb5878bc");
+
+        return view;
     }
 
 
-    /*private class ProgressTask extends AsyncTask<String, Void, String> {
+    private class ProgressTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... path) {
 
@@ -47,11 +61,19 @@ public class WeatherFragment extends Fragment {
         @Override
         protected void onPostExecute(String content) {
 
-            contentText=content;
-            contentView.setText(content);
-            webView.loadData(content, "text/html; charset=utf-8", "utf-8");
-            Toast.makeText(getActivity(), "Данные загружены", Toast.LENGTH_SHORT)
-                    .show();
+            Gson gson = new Gson();
+            MyWeather weatherToday = gson.fromJson(content, MyWeather.class);
+            Double todayDegrees = Double.parseDouble(weatherToday.getList()[0].getMain().getTemp()) - 273.15;
+            todayDegreesTextView.setText(todayDegrees.intValue()+"°");
+            sunsetTextView.setText(weatherToday.getList()[0].getSys().getSunset());
+            String str = weatherToday.getList()[0].getWeather()[0].getDescription();
+            String descr = str.substring(0, 1).toUpperCase() + str.substring(1);
+            weatherTypeTextView.setText(descr);
+            Double maxTemp = Double.parseDouble(weatherToday.getList()[0].getMain().getTemp_max()) - 273.15;
+            maxTempTextView.setText(maxTemp.intValue()+"°");
+            Double minTemp = Double.parseDouble(weatherToday.getList()[0].getMain().getTemp_min()) - 273.15;
+            minTempTextView.setText(minTemp.intValue()+"°");
+
         }
 
         private String getContent(String path) throws IOException {
@@ -76,7 +98,7 @@ public class WeatherFragment extends Fragment {
                 }
             }
         }
-    }*/
+    }
 
 
 }

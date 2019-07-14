@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:behavior_hideable="false"
-    android:background="#50000000"
+    android:background="@drawable/black_shape_for_weather"
     app:behavior_peekHeight="200dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -26,27 +26,16 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/todayDegrees"
+                android:id="@+id/todayDegreesTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="-10dp"
                 android:background="@android:color/transparent"
                 android:gravity="bottom"
-                android:text="30"
+                android:text=""
                 android:textColor="@android:color/white"
                 android:textSize="120sp" />
 
-            <TextView
-                android:id="@+id/degreeIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="-10dp"
-                android:layout_toEndOf="@+id/todayDegrees"
-                android:background="@android:color/transparent"
-                android:gravity="bottom"
-                android:text="°"
-                android:textColor="@android:color/white"
-                android:textSize="120sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -69,11 +58,12 @@
                     android:src="@drawable/clock" />
 
                 <TextView
+                    android:id="@+id/sunsetTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:gravity="center"
-                    android:text="21 : 15 WIB"
+                    android:text=""
                     android:textColor="#FFFFFF" />
             </LinearLayout>
 
@@ -90,11 +80,12 @@
                     android:src="@drawable/sun_little" />
 
                 <TextView
+                    android:id="@+id/weatherTypeTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:gravity="center"
-                    android:text="Солнечно"
+                    android:text=""
                     android:textColor="#FFFFFF" />
             </LinearLayout>
 
@@ -117,10 +108,11 @@
                         android:src="@drawable/arrow_up" />
 
                     <TextView
+                        android:id="@+id/maxTempTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="38°"
+                        android:text=""
                         android:textColor="#FFFFFF" />
 
                 </LinearLayout>
@@ -137,10 +129,11 @@
                         android:src="@drawable/arrow_down" />
 
                     <TextView
+                        android:id="@+id/minTempTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="26°"
+                        android:text=""
                         android:textColor="#FFFFFF" />
 
                 </LinearLayout>
