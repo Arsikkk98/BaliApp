@@ -3,6 +3,7 @@ package com.example.baliapp;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -12,9 +13,11 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baliapp.models.weather_classes.MyWeather;
 import com.example.baliapp.models.weather_classes.WeatherItem;
+import com.example.baliapp.models.weather_classes.WeatherItemHourly;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -28,6 +31,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 
 public class WeatherFragment extends ListFragment {
+
     TextView todayDegreesTextView;
     TextView sunsetTextView;
     TextView weatherTypeTextView;
@@ -35,6 +39,7 @@ public class WeatherFragment extends ListFragment {
     TextView minTempTextView;
 
     private List<WeatherItem> days = new ArrayList();
+    private List<WeatherItemHourly> hours = new ArrayList();
 
 
     @Override
@@ -47,7 +52,9 @@ public class WeatherFragment extends ListFragment {
         maxTempTextView = (TextView) view.findViewById(R.id.maxTempTextView);
         minTempTextView = (TextView) view.findViewById(R.id.minTempTextView);
 
-        // начальная инициализация списка
+        new ProgressTask().execute("https://api.openweathermap.org/data/2.5/find?q=Denpasar&lang=ru&appid=cbc5d13097177f5161e51f6bbb5878bc");
+
+        //region инициализация списка с днями
         days.add(new WeatherItem ("Понедельник", R.drawable.cloudy, 20, 15 ));
         days.add(new WeatherItem ("Вторник", R.drawable.cloudy, 21, 20 ));
         days.add(new WeatherItem ("Среда", R.drawable.cloudy, 20, 15 ));
@@ -63,8 +70,48 @@ public class WeatherFragment extends ListFragment {
         WeatherListAdapter weatherAdapter = new WeatherListAdapter(getActivity(), R.layout.weather_list_item, days);
 
         setListAdapter(weatherAdapter);
+        //endregion
 
-        new ProgressTask().execute("https://api.openweathermap.org/data/2.5/find?q=Denpasar&lang=ru&appid=cbc5d13097177f5161e51f6bbb5878bc");
+        //region установка прокручивания LitView
+        ListView listView = (ListView) view.findViewById(android.R.id.list);
+        listView.setOnTouchListener(new ListView.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow NestedScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow NestedScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+
+                // Handle ListView touch events.
+                v.onTouchEvent(event);
+                return true;
+            }
+        });
+        //endregion
+
+        //region инициализация списка с часами
+        hours.add(new WeatherItemHourly ("22:00", R.drawable.cloudy, 20));
+        hours.add(new WeatherItemHourly ("22:00", R.drawable.cloudy, 20));
+        hours.add(new WeatherItemHourly ("22:00", R.drawable.cloudy, 20));
+        hours.add(new WeatherItemHourly ("22:00", R.drawable.cloudy, 20));
+        hours.add(new WeatherItemHourly ("22:00", R.drawable.cloudy, 20));
+        hours.add(new WeatherItemHourly ("22:00", R.drawable.cloudy, 20));
+
+        // создаем адаптер
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.hourly_list);
+        // создаем адаптер
+        WeatherHourlyListAdapter adapter = new WeatherHourlyListAdapter(getActivity(), hours);
+        // устанавливаем для списка адаптер
+        recyclerView.setAdapter(adapter);
+        //endregion
 
         return view;
     }
@@ -91,6 +138,7 @@ public class WeatherFragment extends ListFragment {
             MyWeather weatherToday = gson.fromJson(content, MyWeather.class);
             Double todayDegrees = Double.parseDouble(weatherToday.getList()[0].getMain().getTemp()) - 273.15;
             todayDegreesTextView.setText(todayDegrees.intValue()+"°");
+            weatherToday.getList()[0].getSys().setSunset("21 : 15 WIB");
             sunsetTextView.setText(weatherToday.getList()[0].getSys().getSunset());
             String str = weatherToday.getList()[0].getWeather()[0].getDescription();
             String descr = str.substring(0, 1).toUpperCase() + str.substring(1);
