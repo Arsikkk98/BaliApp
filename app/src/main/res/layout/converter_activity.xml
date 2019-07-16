@@ -97,6 +97,7 @@
                 android:src="@drawable/double_arrow"
                 android:layout_gravity="center"
                 android:layout_span="1"
+                android:onClick="OnChangeCurrencies"
                 />
             <ImageView
                 android:layout_width="wrap_content"

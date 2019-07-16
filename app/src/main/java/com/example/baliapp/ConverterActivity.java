@@ -5,12 +5,15 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -26,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +78,21 @@ public class ConverterActivity extends AppCompatActivity {
         EditText editText = (EditText) findViewById(R.id.first_currency_value);
         editText.requestFocus();
 
+        editText.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+                CalculateExchange();
+            }
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+            }
+        });
+
         new ProgressTask().execute("https://openexchangerates.org/api/latest.json?app_id=b6979116e78f479cba34909c6a6885bf");
 
     }
@@ -98,7 +117,7 @@ public class ConverterActivity extends AppCompatActivity {
             Gson gson = new Gson();
             ExchangeRates ratesToday = gson.fromJson(content, ExchangeRates.class);
 
-            currencies.add(new Currency("Российский рубли", "RUB  ", R.drawable.rub, ratesToday.getRates().getRUB() ));
+            currencies.add(new Currency("Российский рубль", "RUB  ", R.drawable.rub, ratesToday.getRates().getRUB() ));
             currencies.add(new Currency("Индонезийская рупия", "IDR  ", R.drawable.idr, ratesToday.getRates().getIDR() ));
             currencies.add(new Currency("Доллар", "USD  ", R.drawable.usd, ratesToday.getRates().getUSD() ));
             currencies.add(new Currency("Евро", "EUR  ", R.drawable.eur, ratesToday.getRates().getEUR() ));
@@ -107,6 +126,8 @@ public class ConverterActivity extends AppCompatActivity {
             changeFirstCurrency();
             secondCurrency = currencies.get(1);
             changeSecondCurrency();
+
+            CalculateExchange();
         }
 
         private String getContent(String path) throws IOException {
@@ -134,6 +155,8 @@ public class ConverterActivity extends AppCompatActivity {
     }
 
     private void changeFirstCurrency(){
+        TextView firstCurrencyType = (TextView) findViewById(R.id.first_currency_type);
+        firstCurrencyType.setText(firstCurrency.getType());
         TextView firstCurrencyCode = (TextView) findViewById(R.id.first_currency_code);
         firstCurrencyCode.setText(firstCurrency.getCode());
         ImageView firstCurrencyImg = (ImageView) findViewById(R.id.first_currency_img);
@@ -141,6 +164,8 @@ public class ConverterActivity extends AppCompatActivity {
     }
 
     private void changeSecondCurrency(){
+        TextView secondCurrencyType = (TextView) findViewById(R.id.second_currency_type);
+        secondCurrencyType.setText(secondCurrency.getType());
         TextView secondCurrencyCode = (TextView) findViewById(R.id.second_currency_code);
         secondCurrencyCode.setText(secondCurrency.getCode());
         ImageView secondCurrencyImg = (ImageView) findViewById(R.id.second_currency_img);
@@ -151,12 +176,37 @@ public class ConverterActivity extends AppCompatActivity {
         int nowIndex = currencies.indexOf(firstCurrency);
         firstCurrency = currencies.get(++nowIndex%currencies.size());
         changeFirstCurrency();
+        CalculateExchange();
     }
 
     public void OnChangeSecondCurrency(View view) {
         int nowIndex = currencies.indexOf(secondCurrency);
         secondCurrency = currencies.get(++nowIndex%currencies.size());
         changeSecondCurrency();
+        CalculateExchange();
+    }
+
+    public void OnChangeCurrencies(View view) {
+        Currency some = firstCurrency;
+        firstCurrency = secondCurrency;
+        secondCurrency = some;
+        changeFirstCurrency();
+        changeSecondCurrency();
+        CalculateExchange();
+    }
+
+    public void CalculateExchange() {
+        TextView firstCurrencyValue = (TextView) findViewById(R.id.first_currency_value);
+        try {
+            double firstValue = Double.valueOf(String.valueOf(firstCurrencyValue.getText()));
+            double dollarEquivalent = firstValue/firstCurrency.getValue();
+
+            TextView secondCurrencyValue = (TextView) findViewById(R.id.second_currency_value);
+            secondCurrencyValue.setText(new DecimalFormat("#.##").format(dollarEquivalent*secondCurrency.getValue()));
+        }catch (NumberFormatException e){
+            Toast.makeText(this, "Enter valid number.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     //Включение/Отключение нужного параметра
