@@ -32,11 +32,11 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class WeatherFragment extends ListFragment {
 
-    TextView todayDegreesTextView;
-    TextView sunsetTextView;
-    TextView weatherTypeTextView;
-    TextView maxTempTextView;
-    TextView minTempTextView;
+    private TextView todayDegreesTextView;
+    private TextView sunsetTextView;
+    private TextView weatherTypeTextView;
+    private TextView maxTempTextView;
+    private TextView minTempTextView;
 
     private List<WeatherItem> days = new ArrayList();
     private List<WeatherItemHourly> hours = new ArrayList();
@@ -46,25 +46,25 @@ public class WeatherFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
-        todayDegreesTextView = (TextView) view.findViewById(R.id.todayDegreesTextView);
-        sunsetTextView = (TextView) view.findViewById(R.id.sunsetTextView);
-        weatherTypeTextView = (TextView) view.findViewById(R.id.weatherTypeTextView);
-        maxTempTextView = (TextView) view.findViewById(R.id.maxTempTextView);
-        minTempTextView = (TextView) view.findViewById(R.id.minTempTextView);
+        todayDegreesTextView = view.findViewById(R.id.todayDegreesTextView);
+        sunsetTextView = view.findViewById(R.id.sunsetTextView);
+        weatherTypeTextView = view.findViewById(R.id.weatherTypeTextView);
+        maxTempTextView = view.findViewById(R.id.maxTempTextView);
+        minTempTextView = view.findViewById(R.id.minTempTextView);
 
         new ProgressTask().execute("https://api.openweathermap.org/data/2.5/find?q=Denpasar&lang=ru&appid=cbc5d13097177f5161e51f6bbb5878bc");
 
         //region инициализация списка с днями
         days.add(new WeatherItem ("Понедельник", R.drawable.cloudy, 20, 15 ));
         days.add(new WeatherItem ("Вторник", R.drawable.cloudy, 21, 20 ));
-        days.add(new WeatherItem ("Среда", R.drawable.cloudy, 20, 15 ));
+        days.add(new WeatherItem ("Среда", R.drawable.night, 20, 15 ));
         days.add(new WeatherItem ("Четверг", R.drawable.cloudy, 18, 18 ));
         days.add(new WeatherItem ("Пятница", R.drawable.cloudy, 25, 17 ));
         days.add(new WeatherItem ("Суббота", R.drawable.cloudy, 24, 18 ));
-        days.add(new WeatherItem ("Воскресенье", R.drawable.cloudy, 24, 18 ));
-        days.add(new WeatherItem ("Понедельник", R.drawable.cloudy, 24, 18 ));
-        days.add(new WeatherItem ("Вторник", R.drawable.cloudy, 24, 18 ));
-        days.add(new WeatherItem ("Среда", R.drawable.cloudy, 24, 18 ));
+        days.add(new WeatherItem ("Воскресенье", R.drawable.snow, 24, 18 ));
+        days.add(new WeatherItem ("Понедельник", R.drawable.storm, 24, 18 ));
+        days.add(new WeatherItem ("Вторник", R.drawable.storm, 20, 18 ));
+        days.add(new WeatherItem ("Среда", R.drawable.snow, 24, 18 ));
 
         // создаем адаптер
         WeatherListAdapter weatherAdapter = new WeatherListAdapter(getActivity(), R.layout.weather_list_item, days);
@@ -73,7 +73,7 @@ public class WeatherFragment extends ListFragment {
         //endregion
 
         //region установка прокручивания LitView
-        ListView listView = (ListView) view.findViewById(android.R.id.list);
+        ListView listView = view.findViewById(android.R.id.list);
         listView.setOnTouchListener(new ListView.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -98,15 +98,15 @@ public class WeatherFragment extends ListFragment {
         //endregion
 
         //region инициализация списка с часами
+        hours.add(new WeatherItemHourly ("19:00", R.drawable.cloud_2, 20));
+        hours.add(new WeatherItemHourly ("20:00", R.drawable.cloudy_night, 20));
+        hours.add(new WeatherItemHourly ("21:00", R.drawable.night, 20));
         hours.add(new WeatherItemHourly ("22:00", R.drawable.cloudy, 20));
-        hours.add(new WeatherItemHourly ("22:00", R.drawable.cloudy, 20));
-        hours.add(new WeatherItemHourly ("22:00", R.drawable.cloudy, 20));
-        hours.add(new WeatherItemHourly ("22:00", R.drawable.cloudy, 20));
-        hours.add(new WeatherItemHourly ("22:00", R.drawable.cloudy, 20));
-        hours.add(new WeatherItemHourly ("22:00", R.drawable.cloudy, 20));
+        hours.add(new WeatherItemHourly ("23:00", R.drawable.storm, 20));
+        hours.add(new WeatherItemHourly ("00:00", R.drawable.snow, 20));
 
         // создаем адаптер
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.hourly_list);
+        RecyclerView recyclerView = view.findViewById(R.id.hourly_list);
         // создаем адаптер
         WeatherHourlyListAdapter adapter = new WeatherHourlyListAdapter(getActivity(), hours);
         // устанавливаем для списка адаптер
@@ -160,7 +160,7 @@ public class WeatherFragment extends ListFragment {
                 c.connect();
                 reader= new BufferedReader(new InputStreamReader(c.getInputStream()));
                 StringBuilder buf=new StringBuilder();
-                String line=null;
+                String line;
                 while ((line=reader.readLine()) != null) {
                     buf.append(line + "\n");
                 }
