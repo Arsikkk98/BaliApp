@@ -1,5 +1,6 @@
 package com.example.baliapp;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -52,7 +53,7 @@ public class WeatherFragment extends ListFragment {
         maxTempTextView = view.findViewById(R.id.maxTempTextView);
         minTempTextView = view.findViewById(R.id.minTempTextView);
 
-        new ProgressTask().execute("https://api.openweathermap.org/data/2.5/find?q=Denpasar&lang=ru&appid=cbc5d13097177f5161e51f6bbb5878bc");
+        new ProgressTask(new ProgressDialog(getActivity())).execute("https://api.openweathermap.org/data/2.5/find?q=Denpasar&lang=ru&appid=cbc5d13097177f5161e51f6bbb5878bc");
 
         //region инициализация списка с днями
         days.add(new WeatherItem ("Понедельник", R.drawable.cloudy, 20, 15 ));
@@ -118,6 +119,19 @@ public class WeatherFragment extends ListFragment {
 
 
     private class ProgressTask extends AsyncTask<String, Void, String> {
+
+        private ProgressDialog dialog;
+
+        public ProgressTask(ProgressDialog dialog) {
+            this.dialog = dialog;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog.setMessage("Загрузка данных...");
+            dialog.show();
+        }
+
         @Override
         protected String doInBackground(String... path) {
 
@@ -148,6 +162,9 @@ public class WeatherFragment extends ListFragment {
             Double minTemp = Double.parseDouble(weatherToday.getList()[0].getMain().getTemp_min()) - 273.15;
             minTempTextView.setText(minTemp.intValue()+"°");
 
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
 
         private String getContent(String path) throws IOException {

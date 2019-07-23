@@ -1,6 +1,7 @@
 package com.example.baliapp;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -62,7 +63,7 @@ public class ConverterActivity extends AppCompatActivity {
         setContentView(R.layout.converter_activity);
 
         //region Замена ActionBar на ToolBar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         toolbar.setNavigationIcon(R.drawable.ic_chevron_left_black_24dp);
@@ -75,7 +76,7 @@ public class ConverterActivity extends AppCompatActivity {
         //endregion
 
         //Открытие клавиатуры
-        EditText editText = (EditText) findViewById(R.id.first_currency_value);
+        EditText editText = findViewById(R.id.first_currency_value);
         editText.requestFocus();
 
         editText.addTextChangedListener(new TextWatcher() {
@@ -93,11 +94,24 @@ public class ConverterActivity extends AppCompatActivity {
             }
         });
 
-        new ProgressTask().execute("https://openexchangerates.org/api/latest.json?app_id=b6979116e78f479cba34909c6a6885bf");
+        new ProgressTask(new ProgressDialog(this)).execute("https://openexchangerates.org/api/latest.json?app_id=b6979116e78f479cba34909c6a6885bf");
 
     }
 
     private class ProgressTask extends AsyncTask<String, Void, String> {
+
+        private ProgressDialog dialog;
+
+        public ProgressTask(ProgressDialog dialog) {
+            this.dialog = dialog;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog.setMessage("Загрузка данных...");
+            dialog.show();
+        }
+
         @Override
         protected String doInBackground(String... path) {
 
@@ -128,6 +142,10 @@ public class ConverterActivity extends AppCompatActivity {
             changeSecondCurrency();
 
             CalculateExchange();
+
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
 
         private String getContent(String path) throws IOException {
@@ -140,7 +158,7 @@ public class ConverterActivity extends AppCompatActivity {
                 c.connect();
                 reader= new BufferedReader(new InputStreamReader(c.getInputStream()));
                 StringBuilder buf=new StringBuilder();
-                String line=null;
+                String line;
                 while ((line=reader.readLine()) != null) {
                     buf.append(line + "\n");
                 }
@@ -155,20 +173,20 @@ public class ConverterActivity extends AppCompatActivity {
     }
 
     private void changeFirstCurrency(){
-        TextView firstCurrencyType = (TextView) findViewById(R.id.first_currency_type);
+        TextView firstCurrencyType = findViewById(R.id.first_currency_type);
         firstCurrencyType.setText(firstCurrency.getType());
-        TextView firstCurrencyCode = (TextView) findViewById(R.id.first_currency_code);
+        TextView firstCurrencyCode = findViewById(R.id.first_currency_code);
         firstCurrencyCode.setText(firstCurrency.getCode());
-        ImageView firstCurrencyImg = (ImageView) findViewById(R.id.first_currency_img);
+        ImageView firstCurrencyImg = findViewById(R.id.first_currency_img);
         firstCurrencyImg.setImageResource(firstCurrency.getImg());
     }
 
     private void changeSecondCurrency(){
-        TextView secondCurrencyType = (TextView) findViewById(R.id.second_currency_type);
+        TextView secondCurrencyType = findViewById(R.id.second_currency_type);
         secondCurrencyType.setText(secondCurrency.getType());
-        TextView secondCurrencyCode = (TextView) findViewById(R.id.second_currency_code);
+        TextView secondCurrencyCode = findViewById(R.id.second_currency_code);
         secondCurrencyCode.setText(secondCurrency.getCode());
-        ImageView secondCurrencyImg = (ImageView) findViewById(R.id.second_currency_img);
+        ImageView secondCurrencyImg = findViewById(R.id.second_currency_img);
         secondCurrencyImg.setImageResource(secondCurrency.getImg());
     }
 
@@ -196,12 +214,12 @@ public class ConverterActivity extends AppCompatActivity {
     }
 
     public void CalculateExchange() {
-        TextView firstCurrencyValue = (TextView) findViewById(R.id.first_currency_value);
+        TextView firstCurrencyValue = findViewById(R.id.first_currency_value);
         try {
             double firstValue = Double.valueOf(String.valueOf(firstCurrencyValue.getText()));
             double dollarEquivalent = firstValue/firstCurrency.getValue();
 
-            TextView secondCurrencyValue = (TextView) findViewById(R.id.second_currency_value);
+            TextView secondCurrencyValue = findViewById(R.id.second_currency_value);
             secondCurrencyValue.setText(new DecimalFormat("#.##").format(dollarEquivalent*secondCurrency.getValue()));
         }catch (NumberFormatException e){
             Toast.makeText(this, "Enter valid number.", Toast.LENGTH_SHORT).show();
