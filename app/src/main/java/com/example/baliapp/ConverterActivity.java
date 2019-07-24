@@ -130,8 +130,8 @@ public class ConverterActivity extends AppCompatActivity {
 
             currencies.add(new Currency("Российский рубль", "RUB  ", R.drawable.rub, ratesToday.getRates().getRUB() ));
             currencies.add(new Currency("Индонезийская рупия", "IDR  ", R.drawable.idr, ratesToday.getRates().getIDR() ));
-            currencies.add(new Currency("Доллар", "USD  ", R.drawable.usd, ratesToday.getRates().getUSD() ));
-            currencies.add(new Currency("Евро", "EUR  ", R.drawable.eur, ratesToday.getRates().getEUR() ));
+            currencies.add(new Currency("Доллар", "USD  ", R.drawable.usa, ratesToday.getRates().getUSD() ));
+            currencies.add(new Currency("Евро", "EUR  ", R.drawable.euro, ratesToday.getRates().getEUR() ));
 
             firstCurrency = currencies.get(0);
             changeFirstCurrency();
