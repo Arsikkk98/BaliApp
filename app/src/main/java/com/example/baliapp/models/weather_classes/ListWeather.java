@@ -5,9 +5,9 @@ public class ListWeather {
 
     private Coord coord;
 
-    private String rain;
+    private Rain rain;
 
-    private String snow;
+    private Snow snow;
 
     private String timezone;
 
@@ -68,19 +68,19 @@ public class ListWeather {
     public void setName(String name) {
         this.name = name;
     }
-    public String getRain() {
+    public Rain getRain() {
         return rain;
     }
 
-    public void setRain(String rain) {
+    public void setRain(Rain rain) {
         this.rain = rain;
     }
 
-    public String getSnow() {
+    public Snow getSnow() {
         return snow;
     }
 
-    public void setSnow(String snow) {
+    public void setSnow(Snow snow) {
         this.snow = snow;
     }
 
