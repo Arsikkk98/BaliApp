@@ -20,11 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.baliapp.models.сonverter_classes.Currency;
-import com.example.baliapp.models.weather_classes.MyWeather;
 import com.example.baliapp.models.сonverter_classes.ExchangeRates;
 import com.google.gson.Gson;
-
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
