@@ -30,8 +30,12 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import io.alterac.blurkit.BlurLayout;
+
 
 public class WeatherFragment extends ListFragment {
+
+    BlurLayout blurLayout;
 
     private TextView todayDegreesTextView;
     private TextView sunsetTextView;
@@ -52,6 +56,8 @@ public class WeatherFragment extends ListFragment {
         weatherTypeTextView = view.findViewById(R.id.weatherTypeTextView);
         maxTempTextView = view.findViewById(R.id.maxTempTextView);
         minTempTextView = view.findViewById(R.id.minTempTextView);
+
+        blurLayout = view.findViewById(R.id.blurLayout);
 
         new ProgressTask(new ProgressDialog(getActivity())).execute("https://api.openweathermap.org/data/2.5/find?q=Denpasar&lang=ru&appid=cbc5d13097177f5161e51f6bbb5878bc");
 
@@ -117,6 +123,17 @@ public class WeatherFragment extends ListFragment {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        blurLayout.startBlur();
+    }
+
+    @Override
+    public void onStop() {
+        blurLayout.pauseBlur();
+        super.onStop();
+    }
 
     private class ProgressTask extends AsyncTask<String, Void, String> {
 
